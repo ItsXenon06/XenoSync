@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="eb9cdcf4-8372-4f1d-a6f7-6e54cf4b87bf" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_C:/Users/Minh Phu/Downloads/XenoSyncV1" value="3HIulKoo2y5xvwYnCfcFPvR6419" />
+      <entry key="_C:/Users/Minh Phu/Downloads/session" value="3HDzIZAFPA266hOX1xpZX4ZJYpO" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.5338183917260783E-5" />
+      <entry key="MS500" value="0.16170941301955583" />
+      <entry key="S2" value="1.3656688513776722" />
+      <entry key="S5" value="2.222867259693732" />
+      <entry key="S10" value="2.8196830146904293" />
+      <entry key="S30" value="3.8310451238128893" />
+      <entry key="S60" value="4.3204888979733385" />
+      <entry key="M2" value="4.649792426189624" />
+      <entry key="M5" value="5.263165092169344" />
+      <entry key="M10" value="7.848161650176601" />
+      <entry key="M15" value="11.874139548623646" />
+      <entry key="M30" value="24.18206178025535" />
+      <entry key="H1" value="45.09659780754928" />
+      <entry key="H2" value="79.16506855590129" />
+      <entry key="H4" value="131.16160526978817" />
+      <entry key="D1" value="254.4648104494063" />
+      <entry key="W1" value="292.8348782530891" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.000000133931855" />
+      <entry key="S2" value="1.0198265360786982" />
+      <entry key="S5" value="1.2668826252800072" />
+      <entry key="S10" value="1.7701674398081653" />
+      <entry key="S30" value="2.8209752500817338" />
+      <entry key="S60" value="3.322271395697456" />
+      <entry key="M2" value="3.6377711691707058" />
+      <entry key="M5" value="3.962983607508656" />
+      <entry key="M10" value="4.649723153277963" />
+      <entry key="M15" value="5.617422714687233" />
+      <entry key="M30" value="8.665758010986897" />
+      <entry key="H1" value="13.766303147038336" />
+      <entry key="H2" value="21.323660103449033" />
+      <entry key="H4" value="31.961273784267778" />
+      <entry key="D1" value="56.1724739172604" />
+      <entry key="W1" value="63.61311693358276" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="2.496612473235292E-4" />
+      <entry key="MS500" value="0.2695930580631917" />
+      <entry key="S2" value="1.814097202950774" />
+      <entry key="S5" value="3.126092310091768" />
+      <entry key="S10" value="4.330075918674132" />
+      <entry key="S30" value="6.516930961824896" />
+      <entry key="S60" value="7.563703017824816" />
+      <entry key="M2" value="8.244350222811331" />
+      <entry key="M5" value="9.206614067810674" />
+      <entry key="M10" value="12.482438418726947" />
+      <entry key="M15" value="17.475044269847693" />
+      <entry key="M30" value="32.82999089207778" />
+      <entry key="H1" value="58.84590937132163" />
+      <entry key="H2" value="100.47391024580259" />
+      <entry key="H4" value="163.1109266863095" />
+      <entry key="D1" value="310.63356320058443" />
+      <entry key="W1" value="356.4473875928765" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3HDzIZAFPA266hOX1xpZX4ZJYpO" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Notification.DisplayName-DoNotAsk-DatabaseConfigFileWatcher.found": "New/updated database configurations found",
+    "Notification.DoNotAsk-DatabaseConfigFileWatcher.found": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.SessionApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "lead/dev-xenon",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Minh Phu/Downloads/XenoSyncV1",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="SessionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="session" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.xenosync.SessionApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.24374.151" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.24374.151" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="eb9cdcf4-8372-4f1d-a6f7-6e54cf4b87bf" name="Changes" comment="" />
+      <created>1785417347986</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1785417347986</updated>
+      <workItem from="1785417349247" duration="772000" />
+      <workItem from="1785489570425" duration="18056000" />
+      <workItem from="1785568055865" duration="255000" />
+      <workItem from="1785568327978" duration="111000" />
+      <workItem from="1785568491596" duration="4673000" />
+      <workItem from="1785585595612" duration="2464000" />
+      <workItem from="1785598936594" duration="6772000" />
+      <workItem from="1785671583029" duration="198000" />
+      <workItem from="1785671806732" duration="315000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
