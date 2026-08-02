@@ -1,7 +1,6 @@
 package com.xenosync.model;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 @Entity
@@ -20,7 +19,7 @@ public class PasswordResetToken {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(nullable = false, unique = true, length = 255)
+    @Column(nullable = false, unique = true)
     private String token;
 
     @Column(name = "expires_at", nullable = false)
