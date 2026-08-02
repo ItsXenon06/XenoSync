@@ -2,12 +2,14 @@ package com.xenosync.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "sessions")
+@Table(
+        name = "sessions",
+        indexes = @Index(name = "idx_sessions_creator_id", columnList = "creator_id")
+)
 @Data
 public class Session {
 
@@ -16,24 +18,26 @@ public class Session {
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(nullable = false, unique = true, length = 8)
+    @Column(name = "session_code", nullable = false, unique = true, length = 8)
     private String sessionCode;
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "join_link", nullable = false)
     private String joinLink;
 
-    @Column(nullable = false)
+    @Column(name = "creator_id", nullable = false)
     private UUID creatorId;
 
-    @Column(nullable = false)
+    @Column(name = "participant_count")
     private Integer participantCount = 1;
 
-    @Column(nullable = false)
+    @Column(name = "max_capacity")
     private Integer maxCapacity = 4;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20)
     private String status = "ACTIVE";
 
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    // getters and setters (or @Data, if using Lombok)
 }
