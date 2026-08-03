@@ -38,5 +38,4 @@ public class SessionParticipant {
 
     @Column(name = "joined_at")
     private OffsetDateTime joinedAt = OffsetDateTime.now();
-
 }
