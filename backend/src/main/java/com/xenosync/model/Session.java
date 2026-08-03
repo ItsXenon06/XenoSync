@@ -46,5 +46,8 @@ public class Session {
     @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
+    @Column(name = "closed_at")
+    private OffsetDateTime closedAt;
+
     // getters and setters (or @Data, if using Lombok)
 }

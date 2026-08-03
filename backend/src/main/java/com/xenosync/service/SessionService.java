@@ -2,11 +2,14 @@ package com.xenosync.service;
 import com.xenosync.constants.SessionConstants;
 import com.xenosync.model.Session;
 import com.xenosync.model.SessionParticipant;
+import com.xenosync.repository.SessionLinkedRepoRepository;
 import com.xenosync.repository.SessionParticipantRepository;
 import com.xenosync.repository.SessionRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.security.SecureRandom;
+import java.time.OffsetDateTime;
 
 import java.util.UUID;
 
@@ -16,18 +19,25 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
     private final SessionParticipantRepository sessionParticipantRepository;
-    @Autowired
-    public SessionService(SessionRepository sessionRepository, SessionParticipantRepository sessionParticipantRepository) {
+    private final SessionLinkedRepoRepository sessionLinkedRepoRepository;
+    //@Autowired
+    public SessionService(SessionRepository sessionRepository, SessionParticipantRepository sessionParticipantRepository, SessionLinkedRepoRepository sessionLinkedRepoRepository) {
         this.sessionRepository = sessionRepository;
         this.sessionParticipantRepository = sessionParticipantRepository;
+        this.sessionLinkedRepoRepository = sessionLinkedRepoRepository;
     }
-    private static final String ALPHANUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    //private static final String ALPHANUMERIC_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static final String ALPHANUMERIC_CHARACTERS =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
     private static String generateRandomString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < SessionConstants.JOIN_CODE_LENGTH; i++) {
-            int index = (int) (Math.random() * ALPHANUMERIC_CHARACTERS.length());
-            sb.append(ALPHANUMERIC_CHARACTERS.charAt(index));
+            sb.append(ALPHANUMERIC_CHARACTERS.charAt(
+                    SECURE_RANDOM.nextInt(ALPHANUMERIC_CHARACTERS.length())
+            ));
         }
         return sb.toString();
     }
@@ -75,7 +85,10 @@ public class SessionService {
 
         sessionParticipantRepository.delete(participant);
 
-        session.setParticipantCount(session.getParticipantCount() - 1);
+        session.setParticipantCount(
+                (int) sessionParticipantRepository.countBySessionId(session.getId())
+        ); //self-correcting
+
         return sessionRepository.save(session);
     }
 
@@ -96,7 +109,9 @@ public class SessionService {
         participant.setUserId(userId);
         sessionParticipantRepository.save(participant);
 
-        session.setParticipantCount(session.getParticipantCount() + 1);
+        session.setParticipantCount(
+                (int) sessionParticipantRepository.countBySessionId(session.getId())
+        ); //self-correcting
         return sessionRepository.save(session);
     }
 
@@ -106,10 +121,21 @@ public class SessionService {
         return session;
     }
 
+    public boolean isRepoLinker(String sessionCode, UUID userId) {
+        Session session = sessionRepository.findBySessionCode(sessionCode)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+
+        return sessionLinkedRepoRepository
+                .findBySessionId(session.getId())
+                .map(repo -> repo.getLinkedBy().equals(userId))
+                .orElse(false);
+    }
+
     public Session closeSession(String sessionCode) {
         Session session = sessionRepository.findBySessionCode(sessionCode)
                 .orElseThrow(() -> new RuntimeException("Session not found"));
         session.setStatus("CLOSED");
+        session.setClosedAt(OffsetDateTime.now());
         return sessionRepository.save(session);
     }
 }

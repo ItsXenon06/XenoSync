@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 @Entity
 @Table(
-        name = "commit_vote_responses",
+        name = "commit_votes",
         uniqueConstraints = @UniqueConstraint(columnNames = {"vote_id", "user_id"}),
         indexes = @Index(name = "idx_commit_vote_responses_vote_id", columnList = "vote_id")
 )
