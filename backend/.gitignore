@@ -51,3 +51,4 @@ Thumbs.db
 application-local.properties
 application-local.yml
 application.properties
+/secret/
