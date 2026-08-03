@@ -1,7 +1,9 @@
 package com.xenosync.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.EqualsAndHashCode;
+
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -15,9 +17,16 @@ import java.util.UUID;
                 @Index(name = "idx_session_file_contributions_user_id", columnList = "user_id")
         }
 )
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class SessionFileContribution {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)

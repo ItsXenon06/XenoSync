@@ -1,13 +1,17 @@
 package com.xenosync.model;
+
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
+
 @Entity
 @Table(
         name = "commit_vote_responses",
         uniqueConstraints = @UniqueConstraint(columnNames = {"vote_id", "user_id"}),
-        indexes = @Index(name = "idx_commit_vote_responses_vote_id", columnList = "vote_id")
+        indexes = {
+                @Index(name = "idx_commit_vote_responses_vote_id", columnList = "vote_id")
+        }
 )
 @Getter
 @Setter
@@ -16,29 +20,23 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class CommitVote {
+public class CommitVoteResponse {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "session_id", nullable = false)
-    private UUID sessionId;
+    @Column(name = "vote_id", nullable = false)
+    private UUID voteId;
 
-    @Column(name = "proposed_by", nullable = false)
-    private UUID proposedBy;
-
-    @Column(name = "commit_message", nullable = false, length = 500)
-    private String commitMessage;
+    @Column(name = "user_id", nullable = false)
+    private UUID userId;
 
     @Column(nullable = false, length = 10)
-    private String status = "PENDING";
+    private String response; // 'APPROVE', 'REJECT'
 
-    @Column(name = "created_at")
-    private OffsetDateTime createdAt = OffsetDateTime.now();
-
-    @Column(name = "resolved_at")
-    private OffsetDateTime resolvedAt;
-
+    @Column(name = "voted_at")
+    private OffsetDateTime votedAt = OffsetDateTime.now();
 }

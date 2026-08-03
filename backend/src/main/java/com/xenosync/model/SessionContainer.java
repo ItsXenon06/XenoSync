@@ -1,7 +1,9 @@
 package com.xenosync.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.EqualsAndHashCode;
+
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
@@ -13,9 +15,16 @@ import java.util.UUID;
                 @Index(name = "idx_session_containers_status", columnList = "status")
         }
 )
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class SessionContainer {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -54,5 +63,4 @@ public class SessionContainer {
     @Column(name = "last_active_at")
     private OffsetDateTime lastActiveAt;
 
-    // getters and setters (or @Data, if using Lombok)
 }

@@ -1,6 +1,7 @@
 package com.xenosync.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.EqualsAndHashCode;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -11,9 +12,16 @@ import java.util.UUID;
         uniqueConstraints = @UniqueConstraint(columnNames = {"session_id", "file_path"}),
         indexes = @Index(name = "idx_session_files_session_id", columnList = "session_id")
 )
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"content"})
 public class SessionFile {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -38,5 +46,4 @@ public class SessionFile {
     @Column(name = "edited_at")
     private OffsetDateTime editedAt;
 
-    // getters and setters (or @Data, if using Lombok)
 }

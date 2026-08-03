@@ -1,6 +1,6 @@
 package com.xenosync.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,9 +13,16 @@ import java.util.UUID;
                 @Index(name = "idx_session_commit_coauthors_user_id", columnList = "user_id")
         }
 )
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
 public class SessionCommitCoauthor {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -27,5 +34,5 @@ public class SessionCommitCoauthor {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    // getters and setters (or @Data, if using Lombok)
+
 }
