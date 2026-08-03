@@ -1,24 +1,29 @@
 package com.xenosync.model;
+
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.EqualsAndHashCode;
-
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+//DEV NOTE: CAREFUL ON GIX INDEX, AS SPRINGBOOT DONT CARE
+
+
 @Entity
 @Table(
-        name = "plan_items",
-        indexes = @Index(name = "idx_plan_items_session_id", columnList = "session_id")
+        name = "chat_messages",
+        indexes = {
+                @Index(name = "idx_chat_messages_session_id", columnList = "session_id")
+                // GIN full-text index on content is not representable via @Index; add via migration/DDL instead
+        }
 )
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded= true)
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
-public class PlanItem {
+public class ChatMessage {
 
     @EqualsAndHashCode.Include
     @Id
@@ -29,17 +34,11 @@ public class PlanItem {
     @Column(name = "session_id", nullable = false)
     private UUID sessionId;
 
-    @Column(name = "created_by", nullable = false)
-    private UUID createdBy;
+    @Column(name = "sender_id", nullable = false)
+    private UUID senderId;
 
-    @Column(nullable = false, length = 200)
-    private String title;
-
-    @Column(length = 2000)
-    private String description;
-
-    @Column(nullable = false, length = 20)
-    private String category = "TODO";
+    @Column(nullable = false, length = 2000)
+    private String content;
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();
@@ -47,5 +46,6 @@ public class PlanItem {
     @Column(name = "edited_at")
     private OffsetDateTime editedAt;
 
-    // getters and setters (or @Data, if using Lombok)
+    @Column(name = "deleted_at")
+    private OffsetDateTime deletedAt;
 }

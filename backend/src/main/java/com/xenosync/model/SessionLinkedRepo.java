@@ -1,16 +1,29 @@
 package com.xenosync.model;
 
+
+//DEV NOTE: THIS IS THE CORRESPONDING ENTITY FOR SESSIONREPOSITORY TABLE
+
+
+
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.EqualsAndHashCode;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "session_repositories")
-@Data
-public class SessionRepository {
+@Table(name = "session_repositories") //KEEP THE NAME PER DEV NOTE
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"githubAccessToken"})
+public class SessionLinkedRepo {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -34,6 +47,12 @@ public class SessionRepository {
     @Column(name = "linked_by", nullable = false)
     private UUID linkedBy;
 
+    @Column(name = "github_installation_id", length = 50)
+    private String githubInstallationId;
+
+    @Column(name = "github_token_expires_at")
+    private OffsetDateTime githubTokenExpiresAt;
+
     @Column(name = "github_access_token", nullable = false)
     private String githubAccessToken;
 
@@ -49,5 +68,4 @@ public class SessionRepository {
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
-    // getters and setters (or @Data, if using Lombok)
 }

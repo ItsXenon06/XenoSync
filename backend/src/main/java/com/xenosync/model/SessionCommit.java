@@ -1,6 +1,7 @@
 package com.xenosync.model;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.EqualsAndHashCode;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -10,9 +11,16 @@ import java.util.UUID;
         name = "session_commits",
         indexes = @Index(name = "idx_session_commits_session_id", columnList = "session_id")
 )
-@Data
-public class SessionCommits {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString
+public class SessionCommit {
 
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)

@@ -2,19 +2,26 @@ package com.xenosync.model;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"passwordHash"})
 public class User {
     // Automatically update time
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = OffsetDateTime.now();
     }
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -38,13 +45,18 @@ public class User {
     @Column(name = "email_verified", nullable = false)
     private boolean emailVerified = false;
 
+    @Column(name = "github_id", unique = true, length = 50)
+    private String githubId;
+
+    @Column(name = "github_username", length = 100)
+    private String githubUsername;
+
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();
 
     @Column(name = "updated_at")
     private OffsetDateTime updatedAt = OffsetDateTime.now();
 
-    // getters and setters (or @Data, if using Lombok)
 
 }
 
