@@ -27,7 +27,7 @@ public class PasswordResetToken {
     private UUID userId;
 
     @Column(nullable = false, unique = true)
-    private String token;
+    private String token_hash;
 
     @Column(name = "expires_at", nullable = false)
     private OffsetDateTime expiresAt;
