@@ -45,4 +45,7 @@ public class RefreshToken {
 
     @Column(name = "revoked_at")
     private OffsetDateTime revokedAt;
+
+    @Column(name = "absolute_expires_at", nullable = false)
+    private OffsetDateTime absoluteExpiresAt;
 }

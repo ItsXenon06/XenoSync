@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString(exclude = {"token"})
+@ToString(exclude = {"token_hash"})
 public class EmailVerificationToken {
 
     @EqualsAndHashCode.Include
@@ -27,8 +27,14 @@ public class EmailVerificationToken {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(nullable = false, unique = true)
-    private String token_hash;
+    @Column(name = "token_hash", nullable = false, unique = true)
+    private String tokenHash;
+
+    @Column(nullable = false, length = 20)
+    private String type = "VERIFY_EMAIL"; // VERIFY_EMAIL, ATTACH_PASSWORD
+
+    @Column(name = "pending_password_hash")
+    private String pendingPasswordHash; // only set for ATTACH_PASSWORD rows
 
     @Column(name = "expires_at", nullable = false)
     private OffsetDateTime expiresAt;
