@@ -43,7 +43,7 @@ public class AuthService {
      * accepted industry tradeoff.
      */
     public void register(String username, String email, String password, String displayName) {
-        if (userRepository.existsByUsername(username)) {
+        if (userRepository.existsByUsernameIgnoreCase(username)) {
             throw new IllegalArgumentException("Registration failed");
         }
 
@@ -68,8 +68,15 @@ public class AuthService {
                     .emailVerified(false)
                     .build();
 
-            User saved = userRepository.save(user);
-            emailVerificationService.issueVerificationToken(saved.getId(), email);
+            try {
+                User saved = userRepository.save(user);
+                emailVerificationService.issueVerificationToken(saved.getId(), email);
+            } catch (org.springframework.dao.DataIntegrityViolationException e) {
+                // Lost the race — another request claimed this username/email between our
+                // pre-check and this insert. Same generic response as the pre-check losses,
+                // preserving enumeration protection either way.
+                throw new IllegalArgumentException("Registration failed");
+            }
         });
     }
 

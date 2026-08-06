@@ -1,6 +1,10 @@
 package com.xenosync.config;
 
+import com.xenosync.security.CustomOAuth2UserService;
+import com.xenosync.security.GithubOAuth2FailureHandler;
+import com.xenosync.security.GithubOAuth2SuccessHandler;
 import com.xenosync.security.JwtAuthFilter;
+import com.xenosync.security.RateLimitFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,9 +18,23 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthFilter jwtAuthFilter;
+    private final RateLimitFilter rateLimitFilter;
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final GithubOAuth2SuccessHandler githubOAuth2SuccessHandler;
+    private final GithubOAuth2FailureHandler githubOAuth2FailureHandler;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+    public SecurityConfig(
+            JwtAuthFilter jwtAuthFilter,
+            CustomOAuth2UserService customOAuth2UserService,
+            GithubOAuth2SuccessHandler githubOAuth2SuccessHandler,
+            GithubOAuth2FailureHandler githubOAuth2FailureHandler,
+            RateLimitFilter rateLimitFilter
+    ) {
         this.jwtAuthFilter = jwtAuthFilter;
+        this.customOAuth2UserService = customOAuth2UserService;
+        this.githubOAuth2SuccessHandler = githubOAuth2SuccessHandler;
+        this.githubOAuth2FailureHandler = githubOAuth2FailureHandler;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -41,22 +59,31 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/auth/login",
                                 "/auth/refresh",
+                                "/auth/logout",
                                 "/auth/oauth/exchange",
+                                "/auth/oauth/complete-signup",
                                 "/auth/verify-email",
                                 "/auth/resend-verification",
                                 "/auth/forgot-password",
-                                "/auth/reset-password"
+                                "/auth/reset-password",
+                                "/oauth2/authorization/**",
+                                "/login/oauth2/code/**"
                         ).permitAll()
+                        // /auth/logout intentionally NOT listed — AUTH.md Section 8.1:
+                        // requires an authenticated request.
                         .anyRequest().authenticated()
                 )
 
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
 
-        // TODO (next step, per build order): wire GitHub OAuth2 identity login.
-        // .oauth2Login(oauth2 -> oauth2.successHandler(githubOAuth2SuccessHandler))
-        // Deferred until GithubOAuth2SuccessHandler exists — referencing it now
-        // would be a compile error against a class that isn't written yet.
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .successHandler(githubOAuth2SuccessHandler)
+                        .failureHandler(githubOAuth2FailureHandler)
+                );
 
         return http.build();
     }
+
 }
