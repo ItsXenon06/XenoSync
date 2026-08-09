@@ -40,8 +40,9 @@ public class Session {
     @Column(name = "max_capacity")
     private Integer maxCapacity = 4;
 
+    @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private String status = "ACTIVE";
+    private SessionStatus status = SessionStatus.ACTIVE;
 
     @Column(name = "created_at", updatable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();

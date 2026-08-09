@@ -38,8 +38,9 @@ public class PlanItem {
     @Column(length = 2000)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private String category = "TODO";
+    private PlanItemCategory category = PlanItemCategory.TODO;
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();

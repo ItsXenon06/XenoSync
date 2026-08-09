@@ -1,7 +1,12 @@
 package com.xenosync.service;
+
 import com.xenosync.constants.SessionConstants;
+import com.xenosync.exception.ConflictException;
+import com.xenosync.exception.NotFoundException;
+import com.xenosync.exception.UnauthorizedException;
 import com.xenosync.model.Session;
 import com.xenosync.model.SessionParticipant;
+import com.xenosync.model.SessionStatus;
 import com.xenosync.repository.SessionLinkedRepoRepository;
 import com.xenosync.repository.SessionParticipantRepository;
 import com.xenosync.repository.SessionRepository;
@@ -48,40 +53,52 @@ public class SessionService {
             code = generateRandomString();
             attempts++;
             if (attempts > 5) {
-                throw new RuntimeException("Failed to generate a unique session code");
+                throw new ConflictException("Failed to generate a unique session code");
             }
         } while (sessionRepository.findBySessionCode(code).isPresent());
         return code;
     }
+
     public Session createSession(UUID creatorId) {
         String sessionCode = generateUniqueSessionCode();
-            String joinLink = "xenosync.com/join/" + sessionCode;
+        String joinLink = "xenosync.com/join/" + sessionCode;
 
-            Session session = new Session();
-            session.setSessionCode(sessionCode);
-            session.setJoinLink(joinLink);
-            session.setCreatorId(creatorId);
-            session.setStatus("ACTIVE");
-            session.setParticipantCount(1);
-            session.setMaxCapacity(SessionConstants.DEFAULT_MAX_CAPACITY);
+        Session session = new Session();
+        session.setSessionCode(sessionCode);
+        session.setJoinLink(joinLink);
+        session.setCreatorId(creatorId);
+        session.setStatus(SessionStatus.ACTIVE);
+        session.setMaxCapacity(SessionConstants.DEFAULT_MAX_CAPACITY);
+        // participantCount intentionally not set here — self-corrected below
+        // after the creator's participant row actually exists (Finding 28).
 
-            Session savedSession = sessionRepository.save(session);
+        Session savedSession = sessionRepository.save(session);
 
-            SessionParticipant sessionParticipant = new SessionParticipant();
-            sessionParticipant.setSessionId(savedSession.getId());
-            sessionParticipant.setUserId(creatorId);
-            sessionParticipantRepository.save(sessionParticipant);
+        SessionParticipant sessionParticipant = new SessionParticipant();
+        sessionParticipant.setSessionId(savedSession.getId());
+        sessionParticipant.setUserId(creatorId);
+        sessionParticipantRepository.save(sessionParticipant);
 
-            return savedSession;
+        savedSession.setParticipantCount(
+                (int) sessionParticipantRepository.countBySessionId(savedSession.getId())
+        );
+        return sessionRepository.save(savedSession);
     }
 
     public Session leaveSession(String sessionCode, UUID userId) {
         Session session = sessionRepository.findBySessionCode(sessionCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new NotFoundException("Session not found"));
+
+        // Finding 24 — creator must close the session, not leave it, or the
+        // session is orphaned (nobody left with authority to close it, per
+        // Finding 25's creator-only check below).
+        if (session.getCreatorId().equals(userId)) {
+            throw new UnauthorizedException("Session creator cannot leave. Close the session instead.");
+        }
 
         SessionParticipant participant = sessionParticipantRepository
                 .findBySessionIdAndUserId(session.getId(), userId)
-                .orElseThrow(() -> new RuntimeException("User is not in this session"));
+                .orElseThrow(() -> new NotFoundException("User is not in this session"));
 
         sessionParticipantRepository.delete(participant);
 
@@ -94,15 +111,15 @@ public class SessionService {
 
     public Session joinSession(String sessionCode, UUID userId) {
         Session session = sessionRepository.findBySessionCode(sessionCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        if (!session.getStatus().equals("ACTIVE")) {
-            throw new RuntimeException("Session is not active");
+                .orElseThrow(() -> new NotFoundException("Session not found"));
+        if (session.getStatus() != SessionStatus.ACTIVE) {
+            throw new ConflictException("Session is not active");
         }
-        if(sessionParticipantRepository.existsBySessionIdAndUserId(session.getId(), userId)) {
-            throw new RuntimeException("User already joined the session");
+        if (sessionParticipantRepository.existsBySessionIdAndUserId(session.getId(), userId)) {
+            throw new ConflictException("User already joined the session");
         }
         if (session.getParticipantCount() >= session.getMaxCapacity()) {
-            throw new RuntimeException("Session is full");
+            throw new ConflictException("Session is full");
         }
         SessionParticipant participant = new SessionParticipant();
         participant.setSessionId(session.getId());
@@ -116,14 +133,13 @@ public class SessionService {
     }
 
     public Session getSession(String sessionCode) {
-        Session session = sessionRepository.findBySessionCode(sessionCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        return session;
+        return sessionRepository.findBySessionCode(sessionCode)
+                .orElseThrow(() -> new NotFoundException("Session not found"));
     }
 
     public boolean isRepoLinker(String sessionCode, UUID userId) {
         Session session = sessionRepository.findBySessionCode(sessionCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new NotFoundException("Session not found"));
 
         return sessionLinkedRepoRepository
                 .findBySessionId(session.getId())
@@ -131,10 +147,16 @@ public class SessionService {
                 .orElse(false);
     }
 
-    public Session closeSession(String sessionCode) {
+    public Session closeSession(String sessionCode, UUID requestingUserId) {
         Session session = sessionRepository.findBySessionCode(sessionCode)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
-        session.setStatus("CLOSED");
+                .orElseThrow(() -> new NotFoundException("Session not found"));
+
+        // Finding 25 — only the creator may close the session.
+        if (!session.getCreatorId().equals(requestingUserId)) {
+            throw new UnauthorizedException("Only the session creator can close the session");
+        }
+
+        session.setStatus(SessionStatus.CLOSED);
         session.setClosedAt(OffsetDateTime.now());
         return sessionRepository.save(session);
     }
