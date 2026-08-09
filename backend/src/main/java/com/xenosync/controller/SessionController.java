@@ -2,6 +2,7 @@ package com.xenosync.controller;
 
 import com.xenosync.model.Session;
 import com.xenosync.service.SessionService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -10,6 +11,14 @@ import java.util.UUID;
 @RequestMapping("/v1/session")
 public class SessionController {
 
+    private UUID resolveUserId() {
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated()) {
+            throw new org.springframework.security.access.AccessDeniedException("Not authenticated");
+        }
+        return (UUID) auth.getPrincipal();
+    }
+
     private final SessionService sessionService;
 
     public SessionController(SessionService sessionService) {
@@ -17,13 +26,13 @@ public class SessionController {
     }
 
     @PostMapping("/create")
-    public Session createSession(@RequestBody UUID creatorId) {
-        return sessionService.createSession(creatorId);
+    public Session createSession() {
+        return sessionService.createSession(resolveUserId());
     }
 
     @PostMapping("/join/{sessionCode}")
-    public Session joinSession(@PathVariable String sessionCode, @RequestParam UUID userId) {
-        return sessionService.joinSession(sessionCode, userId);
+    public Session joinSession(@PathVariable String sessionCode) {
+        return sessionService.joinSession(sessionCode, resolveUserId());
     }
 
     @GetMapping("/{sessionCode}")
@@ -37,8 +46,8 @@ public class SessionController {
      * should have been shown before this call was made.
      */
     @GetMapping("/{sessionCode}/leave-warning")
-    public boolean getLeaveWarning(@PathVariable String sessionCode, @RequestParam UUID userId) {
-        return sessionService.isRepoLinker(sessionCode, userId);
+    public boolean getLeaveWarning(@PathVariable String sessionCode) {
+        return sessionService.isRepoLinker(sessionCode, resolveUserId());
     }
 
     /**
@@ -47,12 +56,12 @@ public class SessionController {
      * show a confirm prompt before calling this endpoint.
      */
     @DeleteMapping("/leave/{sessionCode}")
-    public Session leaveSession(@PathVariable String sessionCode, @RequestParam UUID userId) {
-        return sessionService.leaveSession(sessionCode, userId);
+    public Session leaveSession(@PathVariable String sessionCode) {
+        return sessionService.leaveSession(sessionCode, resolveUserId());
     }
 
     @PutMapping("/close/{sessionCode}")
     public Session closeSession(@PathVariable String sessionCode) {
-        return sessionService.closeSession(sessionCode);
+        return sessionService.closeSession(sessionCode, resolveUserId());
     }
 }

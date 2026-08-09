@@ -40,19 +40,19 @@ public class RateLimitFilter extends OncePerRequestFilter {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     private static final Policy[] POLICIES = new Policy[] {
-            new Policy("/auth/login", "email",
+            new Policy("/v1/auth/login", "email",
                     limit(10, Duration.ofMinutes(5)), limit(5, Duration.ofMinutes(5))),
-            new Policy("/auth/register", "email",
+            new Policy("/v1/auth/register", "email",
                     limit(10, Duration.ofHours(1)), limit(3, Duration.ofHours(1))),
-            new Policy("/auth/forgot-password", "email",
+            new Policy("/v1/auth/forgot-password", "email",
                     limit(10, Duration.ofHours(1)), limit(3, Duration.ofHours(1))),
-            new Policy("/auth/resend-verification", "email",
+            new Policy("/v1/auth/resend-verification", "email",
                     limit(10, Duration.ofHours(1)), limit(3, Duration.ofHours(1))),
-            new Policy("/auth/reset-password", "token",
+            new Policy("/v1/auth/reset-password", "token",
                     limit(20, Duration.ofMinutes(15)), limit(5, Duration.ofMinutes(15))),
-            new Policy("/auth/oauth/exchange", "code",
+            new Policy("/v1/auth/oauth/exchange", "code",
                     limit(30, Duration.ofMinutes(1)), limit(10, Duration.ofMinutes(1))),
-            new Policy("/auth/oauth/complete-signup", "code",
+            new Policy("/v1/auth/oauth/complete-signup", "code",
                     limit(30, Duration.ofMinutes(1)), limit(10, Duration.ofMinutes(1))),
     };
 

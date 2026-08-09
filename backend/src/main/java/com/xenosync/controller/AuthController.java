@@ -39,12 +39,12 @@ import java.util.UUID;
  * IllegalStateException / RuntimeException without a shared hierarchy).
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/v1/auth")
 public class AuthController {
 
     private static final String ACCESS_COOKIE_NAME = "access_token";
     private static final String REFRESH_COOKIE_NAME = "refresh_token";
-    private static final String REFRESH_COOKIE_PATH = "/auth/refresh";
+    private static final String REFRESH_COOKIE_PATH = "/v1/auth/refresh";
 
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
@@ -57,6 +57,7 @@ public class AuthController {
     private final long accessTokenExpiryMinutes;
     private final long refreshTokenExpiryDays;
 
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(AuthController.class);
     public AuthController(
             AuthService authService,
             RefreshTokenService refreshTokenService,
@@ -85,11 +86,15 @@ public class AuthController {
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest req) {
         try {
             authService.register(req.username(), req.email(), req.password(), req.displayName());
-        } catch (IllegalArgumentException e) {
-            // Deliberately still 200 + generic body, not 400 — AUTH.md Section 2/13:
+        } catch (Exception e) {
+            // Deliberately still 200 + generic body, not 400/500 — AUTH.md Section 2/13:
             // register's response must not distinguish failure reasons from success
-            // at the transport level either, or the enumeration protection leaks
-            // through status codes even with identical bodies.
+            // at the transport level either, or enumeration protection leaks through
+            // status codes even with an identical body. Broadened from
+            // IllegalArgumentException to cover MailException (Mailtrap outage, etc.)
+            // and anything else — a swallowed unknown failure is safer here than a 500
+            // that reveals registration touched a real, distinguishable code path.
+            log.warn("Registration attempt failed silently: {}", e.getClass().getSimpleName());
         }
         return ResponseEntity.ok(Map.of("message", "Check your email to verify your account."));
     }
