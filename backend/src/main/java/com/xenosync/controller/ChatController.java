@@ -21,17 +21,14 @@ public class ChatController {
 
     private final ChatService chatService;
 
-    /**
-     * Sends a new chat message in the given session.
-     * TODO: senderId currently comes from the request body (client-supplied),
-     * which isn't trustworthy long-term — should come from the authenticated
-     * principal instead once auth is wired in.
-     */
     @PostMapping
-    public ChatMessage sendMessage(@PathVariable UUID sessionId, @RequestBody ChatMessageRequest request) {
-        return chatService.sendMessage(sessionId, request.senderId(), request.content());
+    public ChatMessage sendMessage(
+            @PathVariable UUID sessionId,
+            @RequestBody ChatMessageRequest request,
+            HttpSession session) {
+        UUID senderId = (UUID) session.getAttribute("userId"); // whatever key you use at login
+        return chatService.sendMessage(sessionId, senderId, request.content());
     }
-
     /**
      * Returns full chat history for a session, oldest first.
      * Soft-deleted messages (deletedAt set) are excluded at the repository level.
