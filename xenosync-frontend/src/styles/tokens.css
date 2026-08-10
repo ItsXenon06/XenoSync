@@ -1,0 +1,76 @@
+/* XenoSync design tokens — from xenosync-landing.html + xenosync-ui-concept.html */
+
+:root {
+  --radius: 10px;
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme="light"] {
+  --bg: #EFF6FC;
+  --bg-grad: radial-gradient(circle at 15% -10%, #d6ebfb 0%, #EFF6FC 45%);
+  --surface: #FFFFFF;
+  --surface-alt: #E4EFFA;
+  --surface-raised: #FFFFFF;
+  --border: #CEE1F4;
+  --border-soft: #DEEBF9;
+  --text: #0B2036;
+  --text-muted: #4F6E8C;
+  --text-faint: #8AA4BF;
+  --primary: #0577B8;
+  --primary-deep: #045688;
+  --primary-bright: #0EA5E9;
+  --primary-soft: #D3E9FA;
+  --accent: #12B4C9;
+  --accent-soft: #D6F4F7;
+  --flare: #FF6B4A;
+  --flare-soft: #FFE3DA;
+  --user-m: #0577B8;
+  --user-k: #7C5CFC;
+  --user-r: #F97362;
+  --console-bg: #071B2E;
+  --console-text: #AFE0EC;
+  --shadow: 0 6px 24px rgba(9, 46, 70, 0.08);
+  --overlay: rgba(9, 32, 54, 0.45);
+  --success: #16A34A;
+  --keyword: #B5179E;
+  --string: #0F8B5E;
+  --func: #0B65C2;
+  --comment: #8AA4BF;
+  --tag: #C2410C;
+}
+
+html[data-theme="dark"] {
+  --bg: #04060D;
+  --bg-grad: radial-gradient(circle at 70% -10%, #131a3a 0%, #04060D 60%), radial-gradient(circle at 90% 10%, #1a0f2e 0%, transparent 50%);
+  --surface: #0F1530;
+  --surface-alt: #161D42;
+  --surface-raised: #181F49;
+  --border: #262F5C;
+  --border-soft: #1C2447;
+  --text: #E7ECFF;
+  --text-muted: #8D97C4;
+  --text-faint: #545D8A;
+  --primary: #4FD1E8;
+  --primary-deep: #7BE4F2;
+  --primary-bright: #6EE0F5;
+  --primary-soft: #142A44;
+  --accent: #B99CFF;
+  --accent-soft: #201A3E;
+  --flare: #FF9A76;
+  --flare-soft: #3A2418;
+  --user-m: #4FD1E8;
+  --user-k: #B99CFF;
+  --user-r: #FF9A76;
+  --console-bg: #020306;
+  --console-text: #9FE8D8;
+  --shadow: 0 12px 36px rgba(0, 0, 0, 0.55);
+  --overlay: rgba(2, 4, 10, 0.72);
+  --success: #4ADE80;
+  --keyword: #E479D8;
+  --string: #7EE8B8;
+  --func: #7FC8FF;
+  --comment: #545D8A;
+  --tag: #FFB37B;
+}
