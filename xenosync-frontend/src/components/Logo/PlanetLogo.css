@@ -1,0 +1,89 @@
+.planet-logo-wrap {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    flex-shrink: 0;
+}
+
+.planet-logo-stage {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 500px;
+    transform-origin: center;
+    cursor: pointer;
+    user-select: none;
+    perspective: 900px;
+}
+
+.planet-logo-guide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 270px;
+    height: 108px;
+    transform: translate(-50%, -50%) rotateX(72deg);
+    border-radius: 50%;
+    border: 1px dashed rgba(59, 130, 246, 0.2);
+}
+.planet-logo-guide.inner {
+    width: 186px;
+    height: 74px;
+    border-color: rgba(255, 138, 61, 0.18);
+}
+
+.planet-logo-planet-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 112px;
+    height: 112px;
+    transform: translate(-50%, -50%);
+}
+
+.planet-logo-planet {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 30%, #8FCBFF 0%, #3B82F6 45%, #1E40AF 100%);
+    box-shadow:
+            0 0 55px rgba(59, 130, 246, 0.45),
+            0 0 100px rgba(59, 130, 246, 0.22),
+            inset -14px -14px 26px rgba(0, 0, 0, 0.4),
+            inset 8px 8px 18px rgba(255, 255, 255, 0.08);
+}
+
+.planet-logo-ring {
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 2px solid rgba(143, 203, 255, 0.28);
+    transform: rotate(-18deg) scaleY(0.32);
+}
+.planet-logo-ring.ring2 {
+    inset: -30px;
+    border-color: rgba(59, 130, 246, 0.2);
+    transform: rotate(-18deg) scaleY(0.36);
+}
+
+.planet-logo-cursor-layer {
+    position: absolute;
+    inset: 0;
+}
+
+.planet-logo-cursor {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.5));
+}
+.planet-logo-cursor svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}

@@ -1,3 +1,5 @@
+import PlanetLogo from '../../components/Logo/PlanetLogo';
+
 type Mode = 'login' | 'signup';
 
 interface Props {
@@ -25,7 +27,7 @@ export default function AuthModal({ open, mode, onClose, onSwitchMode }: Props) 
                 <button className="auth-close" onClick={onClose}>✕</button>
 
                 <div className="auth-head">
-                    <div className="auth-mark" />
+                    <PlanetLogo size={70} className="auth-mark" />
                     {mode === 'login' ? (
                         <>
                             <h2>Welcome back</h2>

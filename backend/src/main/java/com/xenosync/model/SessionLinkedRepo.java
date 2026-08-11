@@ -5,6 +5,7 @@ package com.xenosync.model;
 
 
 
+import com.xenosync.security.GithubTokenConverter;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.EqualsAndHashCode;
@@ -53,6 +54,7 @@ public class SessionLinkedRepo {
     @Column(name = "github_token_expires_at")
     private OffsetDateTime githubTokenExpiresAt;
 
+    @Convert(converter = GithubTokenConverter.class)
     @Column(name = "github_access_token", nullable = false)
     private String githubAccessToken;
 

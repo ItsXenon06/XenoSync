@@ -4,6 +4,7 @@ import Hero from './Hero';
 import FeatureBento from './FeatureBento';
 import CtaBand from './CtaBand';
 import AuthModal from './AuthModal';
+import PlanetLogo from '../../components/Logo/PlanetLogo';
 
 const STACKS = ['Spring Boot', '.NET', 'Node.js', 'Python', 'PostgreSQL', 'MySQL', 'GitHub', 'Go', 'Redis'];
 
@@ -86,7 +87,7 @@ export default function Landing() {
             <header>
                 <nav>
                     <div className="brand">
-                        <div className="brand-mark"/>
+                        <PlanetLogo size={28} animated={false} interactive={false} />
                         <span className="brand-name">
                             <span>Xeno</span><span>Sync</span>
                         </span>
