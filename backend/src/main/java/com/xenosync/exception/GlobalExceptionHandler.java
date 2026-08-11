@@ -55,4 +55,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("INTERNAL_ERROR", "An unexpected error occurred", OffsetDateTime.now()));
     }
+    @ExceptionHandler(GithubApiException.class)
+    public ResponseEntity<ErrorResponse> handleGithubApi(GithubApiException e) {
+        log.warn("GitHub API call failed: {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                .body(new ErrorResponse("GITHUB_API_ERROR", "GitHub request failed", OffsetDateTime.now()));
+    }
 }
